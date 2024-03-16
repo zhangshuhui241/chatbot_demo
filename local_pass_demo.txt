@@ -1,0 +1,1 @@
+{"appid": "your own appid", "api_key": "your own api key", "api_secret": "your own api secret key"}
