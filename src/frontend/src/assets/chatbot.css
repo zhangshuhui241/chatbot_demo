@@ -1,0 +1,51 @@
+
+.header-text {
+    position:absolute;
+    left: 40%;
+    top:5%;
+    height:10%;
+    text-align: center;
+}
+.user-input-box {
+    width: 60%;
+    height: 15%;
+    position: absolute;
+    top:80%;
+    left:20%;
+    font-size: 25px;
+}
+.input-box-label {
+    width: 90%;
+    height: 20%;
+    float: left;
+    font-size: 70%;
+    text-align: start;
+}
+.input-text-area {
+    width: 80%;
+    height: 75%;
+    font-size: 100%;
+}
+.send-button {
+    height: 80%;
+    width: 15%;
+    float:right;
+    font-size: 100%;
+}
+
+.conversation-history-box {
+    border-style: solid;
+    border-color: lightgray;
+    width: 60%;
+    height: 62%;
+    position: absolute;
+    top:15%;
+    left:20%;
+    font-size: 25px;
+}
+#textarea-history-text {
+    width: 100%;
+    height: 100%;
+    font-size: 100%;
+}
+
