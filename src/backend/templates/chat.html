@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>llm web test</title>
+  <link rel="stylesheet" href="statics/chatbot.css"> 
+</head>
+
+<body>
+    <p class="header-text"><b style="font-size: 200%;">Chatbot test </b> by RayZhang & Doris</p>
+
+    <div class="conversation-history-box">
+        <textarea id="textarea-history-text" type="scrolling-textbox" placeholder="conversation history here">{{history_text}}</textarea>
+    </div>
+
+    <div class="user-input-box">
+        <form style="width: 100%; height: 100%;">
+            <label class="input-box-label" for="textarea-user-input">user input</label>
+            <textarea id="textarea-user-input" type="scrolling-textbox" class="input-text-area" placeholder="user input here" onkeydown="input_text_enter(event)">{{user_input}}</textarea>
+            <button type="button" class="send-button" onclick="click_send()">send</button>
+        </form>
+    </div>
+
+    <script>
+        var history_list = [];
+        var response = {"response":""}
+        var dom_textarea_history_text = document.getElementById("textarea-history-text");
+        var dom_textarea_user_input = document.getElementById("textarea-user-input");
+
+        function click_send() {
+            data = {
+                "query_string":dom_textarea_user_input.value,
+                "system":""
+            };
+            rsp = sendRestfulRequest("post", "http://127.0.0.1:241/app_web/invoke", data);
+            console.log("rsp = ",rsp);
+            this.dom_textarea_history_text.value = this.dom_textarea_history_text.value + ("\n\nuser:" + this.dom_textarea_user_input.value.trim());
+            this.dom_textarea_user_input.value="";
+            this.dom_textarea_history_text.scrollTop = this.dom_textarea_history_text.scrollHeight;
+        }
+
+        function input_text_enter(event) {
+            // if (event.key === 'Enter') {
+            //     click_send();
+            //     document.getElementById("textarea-user-input").value="";
+            // }
+        }
+
+        function sendRestfulRequest(method, url, data) {
+            var xhr = new XMLHttpRequest();
+            xhr.open(method, url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                handleResponse(response); // 根据返回的response处理响应
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        }
+
+        function handleResponse(response) {
+            // 根据返回的response处理响应
+            console.log(response.response);
+            this.dom_textarea_history_text.value = this.dom_textarea_history_text.value + ("\n\nassistant:" + response.response);
+            this.dom_textarea_history_text.scrollTop = this.dom_textarea_history_text.scrollHeight;
+        }
+
+      </script>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 <template>
   <p class="header-text"><b style="font-size: 200%;">Chatbot test </b> by RayZhang & Doris</p>
+  <!-- <p>chatbot</p> -->
 
   <div class="conversation-history-box">
         <textarea id="textarea-history-text" type="scrolling-textbox" placeholder="conversation history here">{{history_text}}</textarea>
@@ -17,7 +18,6 @@
 
 </template>
 
-
 <script>
 export default {
   data() {
@@ -28,14 +28,12 @@ export default {
   },
   methods:{
     click_send() {
-      if (this.user_input_text.trim().length>=1) {
-        this.history_text = this.history_text + "\n\nuser:" + this.user_input_text
-        this.user_input_text = ""
-      } else {
-        alert('input text can not be blank')
-      }
-      
+      this.history_text = this.history_text + "\n\nuser:" + this.user_input_text
+      this.user_input_text = ""
     },
+    input_text_enter(event) {
+      
+    }
   }
 }
 </script>

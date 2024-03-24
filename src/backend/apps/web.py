@@ -1,7 +1,7 @@
 import utils
 import json
 from fastapi import APIRouter
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 # load configuration
 with open('../../config/local_pass.txt','r') as f:
@@ -20,13 +20,17 @@ wsParam = utils.Websocket_Param(appid, api_key, api_secret, gpt_url, domain)
 # initilize app web
 app_web = APIRouter()
 
-@app_web.post("web/invoke/")
-async def invoke():
-    query = "我们一起来玩过家家吧"
-    system = '你是一个聊天机器人，你的任务就是陪幼儿玩过家家的游戏。你的回复应当简洁而易于理解，情绪投入而无冗余的话语'
-    history = []
-    llm_rsp,llm_history = utils.chat_with_xunfei(query, wsParam, system=system, history=history, debug=False)
-    return llm_rsp
+# define query datatype
+class user_query(BaseModel):
+    query_string: str = ''
+    system: str = ''
+    history: list[str] = []
+
+
+@app_web.post("/invoke/")
+async def invoke(data: user_query):
+    llm_rsp,llm_history = utils.chat_with_xunfei(data.query_string, wsParam, system=data.system, history=data.history, debug=False)
+    return {"response":llm_rsp}
 
 
 

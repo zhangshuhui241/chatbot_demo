@@ -20,7 +20,7 @@ wsParam = utils.Websocket_Param(appid, api_key, api_secret, gpt_url, domain)
 # initilize app web
 app_rest = APIRouter()
 
-@app_rest.post("rest/invoke/")
+@app_rest.post("/invoke/")
 async def invoke():
     query = "我们一起来玩过家家吧"
     system = '你是一个聊天机器人，你的任务就是陪幼儿玩过家家的游戏。你的回复应当简洁而易于理解，情绪投入而无冗余的话语'
