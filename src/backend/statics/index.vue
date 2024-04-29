@@ -1,5 +1,5 @@
 <template>
-  <p class="header-text"><b style="font-size: 200%;">Chatbot test </b> by RayZhang & Doris</p>
+  <p class="header-text"><b style="font-size: 200%;">Chatbot test </b> by RayZhang</p>
   <!-- <p>chatbot</p> -->
 
   <div class="conversation-history-box">

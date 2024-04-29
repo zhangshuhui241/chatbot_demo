@@ -154,3 +154,50 @@ def chat_with_xunfei(query, wsParam, history=[],system='', debug=False):
     return ws.response, history
 
 
+class OpenApiChatBot(object):
+    
+    def __init__(self,model='Qwen-14B-Chat',temperature=0.5,system_setting='',url='',api_key='EMPTY',max_tokens=1000,history=[]):
+        self.model = model
+        self.temperature = temperature
+        self.system_setting = system_setting
+        self.url = url
+        self.api_key = api_key
+        self.max_tokens = 1000
+        self.history = []
+        return
+    
+    def chat(self,user_input):
+        system_messages = [{'role':'user','content':self.system_setting},
+                           {'role':'assistant','content':'好的，我们现在就开始吧。'}]
+        history_messages = self.history
+        user_messages = [{'role':'user','content':user_input}]
+        messages = system_messages + history_messages + user_messages
+        reply = self.invoke(messages)
+        self.history = self.history + user_messages + [{'role':'assistant','content':reply}]
+        return reply
+    
+    def invoke(self,messages,debug=False):
+        # 这个方法用于单次调用大模型的应答能力
+        res = openai.chat.completions.create(model=self.model, messages=messages, stream=True, temperature=self.temperature)
+        reply = ''
+        for chunk in res:
+            try:
+                content = chunk.choices[0].delta.content
+                if content is None:
+                    content = ""
+            except Exception as e:
+                content = chunk.choices[0].delta.get("content", "")
+            reply += content
+            if debug:
+                print(f'invoke: messages = {messages}, reply = {reply}')
+        return reply
+        
+    
+    def summary(self,num_records,debug=False):
+        contexts = [ct['role'] + ':' + ct['content'] for ct in self.history[:num_records]]
+        context = '\n'.join(contexts)
+        messages = [{'role':'user','content':f'请将下面用<>括起来的文字进行归纳总结，字数不超过100。<{context}>'}]
+        summary = self.invoke(messages)
+        if debug:
+            print(f'context: {context} \n summary: {summary}')
+        return summary

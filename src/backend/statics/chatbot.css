@@ -7,7 +7,7 @@
     text-align: center;
 }
 .user-input-box {
-    width: 60%;
+    width: 80%;
     height: 15%;
     position: absolute;
     top:80%;
@@ -28,7 +28,7 @@
 }
 .send-button {
     height: 80%;
-    width: 15%;
+    width: 20%;
     float:right;
     font-size: 100%;
 }

@@ -26,17 +26,59 @@
         var dom_textarea_history_text = document.getElementById("textarea-history-text");
         var dom_textarea_user_input = document.getElementById("textarea-user-input");
 
+        // function click_send() {
+        //     data = {
+        //         "query_string":dom_textarea_user_input.value,
+        //         "system":""
+        //     };
+        //     rsp = sendRestfulRequest("post", "http://127.0.0.1:241/app_web/invoke", data);
+        //     console.log("rsp = ",rsp);
+        //     this.dom_textarea_history_text.value = this.dom_textarea_history_text.value + ("\n\nuser:" + this.dom_textarea_user_input.value.trim());
+        //     this.dom_textarea_user_input.value="";
+        //     this.dom_textarea_history_text.scrollTop = this.dom_textarea_history_text.scrollHeight;
+        // }
+        
         function click_send() {
             data = {
                 "query_string":dom_textarea_user_input.value,
                 "system":""
             };
-            rsp = sendRestfulRequest("post", "http://127.0.0.1:241/app_web/invoke", data);
-            console.log("rsp = ",rsp);
+            // rsp = sendRestfulRequest("post", "https://u227151-b912-108ead1a.westc.gpuhub.com:8443/app_tts/invoke", data);
+            // console.log("rsp = ",rsp);
+            
+            
+            var url = "https://u227151-b912-108ead1a.westc.gpuhub.com:8443/app_tts/invoke"; // 要发送POST请求的URL
+            console.log("url = ",url);
+            // url = 'https://127.0.0.1/app_tts/invoke'
+            fetch("https://u227151-b912-108ead1a.westc.gpuhub.com:8443/app_tts/invoke", {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json', // 指定请求体的类型为 JSON
+              },
+              body: JSON.stringify(data) // 将 JavaScript 对象转换为 JSON 字符串作为请求体
+            })
+            .then(function(response) {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.text(); // 如果服务器返回文本数据，可以使用 text() 方法解析响应
+            })
+            .then(function(data) {
+              console.log(data); // 输出响应数据到控制台
+            })
+            .catch(function(error) {
+              console.error("There was a problem with the fetch operation:", error);
+            });
+
+
+            
+            
+
             this.dom_textarea_history_text.value = this.dom_textarea_history_text.value + ("\n\nuser:" + this.dom_textarea_user_input.value.trim());
             this.dom_textarea_user_input.value="";
             this.dom_textarea_history_text.scrollTop = this.dom_textarea_history_text.scrollHeight;
         }
+        
 
         function input_text_enter(event) {
             // if (event.key === 'Enter') {
@@ -47,6 +89,7 @@
 
         function sendRestfulRequest(method, url, data) {
             var xhr = new XMLHttpRequest();
+            console.log("restful url = ",url);
             xhr.open(method, url, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.onreadystatechange = function () {
