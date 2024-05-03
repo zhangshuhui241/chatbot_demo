@@ -176,6 +176,16 @@ class OpenApiChatBot(object):
         reply = self.invoke(messages)
         self.history = self.history + user_messages + [{'role':'assistant','content':reply}]
         return reply
+        
+    def emotion_chat(self,user_input):
+        system_messages = [{'role':'user','content':self.system_setting},
+                           {'role':'assistant','content':'好的，我们现在就开始吧。'}]
+        history_messages = self.history
+        user_messages = [{'role':'user','content':user_input}]
+        messages = system_messages + history_messages + user_messages
+        reply = self.invoke(messages)
+        self.history = self.history + user_messages + [{'role':'assistant','content':reply}]
+        return reply
     
     def invoke(self,messages,debug=False):
         # 这个方法用于单次调用大模型的应答能力

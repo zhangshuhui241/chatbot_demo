@@ -9,6 +9,7 @@ from apps.tts import *
 app = FastAPI()
 # init static files
 app.mount("/statics",StaticFiles(directory="statics"))
+app.mount("/voice_output",StaticFiles(directory="voice_output"))
 # init additional rounter files
 app.include_router(app_tts, prefix="/app_tts", tags=['tts api'])
 
@@ -32,4 +33,4 @@ async def test():
     return {"test": "Go back home, boy. There nothing here."}
 
 if __name__ == "__main__":
-    uvicorn.run('fastapi_test:app', port=6006, reload=True)
+    uvicorn.run('fastapi_test:app',host='0.0.0.0', port=6006, reload=True)
